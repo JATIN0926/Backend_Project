@@ -1,6 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
-import path from "path";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -28,4 +27,16 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export { uploadOnCloudinary };
+const deleteFromCloudinary = async (publicID) => {
+  try {
+    if (!publicID) {
+      console.log("Error", localFilePath);
+      return null;
+    }
+    await cloudinary.uploader.destroy(publicID);
+  } catch (error) {
+    console.error("Error deleting old avatar from Cloudinary", error);
+    return null;
+  }
+};
+export { uploadOnCloudinary, deleteFromCloudinary };
